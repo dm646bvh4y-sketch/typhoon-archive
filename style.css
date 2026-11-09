@@ -1,0 +1,127 @@
+* { box-sizing: border-box; }
+:root { color-scheme: dark; --bg:#0b1220; --panel:#121d2e; --border:#24344b; --text:#e8eef7; --muted:#91a3ba; --accent:#5bb6ff; }
+body { margin:0; background:linear-gradient(160deg,#0b1220,#101b2c 70%); color:var(--text); font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+.topbar { padding:28px clamp(16px,4vw,52px); display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); gap:16px; }
+.eyebrow { color:#6cbfff; font-size:11px; letter-spacing:.18em; margin:0 0 8px; }
+h1 { margin:0; font-size:clamp(24px,4vw,36px); letter-spacing:.02em; }
+.subtitle { margin:8px 0 0; color:var(--muted); }
+.status { border:1px solid #34516d; border-radius:999px; padding:8px 12px; color:#b6dfff; white-space:nowrap; font-size:12px; }
+.dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:#ffc66d; margin-right:7px; }
+main { max-width:1500px; margin:auto; padding:22px clamp(12px,3vw,36px) 30px; }
+.panel { background:rgba(18,29,46,.92); border:1px solid var(--border); border-radius:14px; box-shadow:0 8px 30px #0002; }
+.controls { padding:14px; display:flex; flex-wrap:wrap; gap:14px; align-items:end; margin-bottom:18px; }
+.control { display:flex; flex-direction:column; gap:7px; min-width:220px; }
+label { font-size:12px; color:var(--muted); }
+select,button { background:#1b2a40; color:var(--text); border:1px solid #334760; border-radius:8px; padding:10px 12px; font:inherit; }
+button { background:#1769a6; border-color:#2689ce; cursor:pointer; font-weight:600; }
+button:hover { background:#2182c5; }
+.dashboard { display:grid; grid-template-columns:minmax(0,1.8fr) minmax(250px,.8fr); gap:18px; }
+.map-panel { overflow:hidden; }
+.panel-heading { display:flex; justify-content:space-between; align-items:center; padding:17px 18px; gap:12px; }
+h2 { font-size:18px; margin:0; }
+.panel-heading p,.small { color:var(--muted); font-size:12px; margin:5px 0 0; }
+#map { height:570px; background:#142338; }
+.disclaimer { margin:0; padding:10px 14px; font-size:11px; color:#ffcf8a; }
+.metrics { display:grid; gap:12px; grid-template-rows:repeat(8,minmax(100px,auto)); }
+.metric { padding:16px; display:flex; flex-direction:column; justify-content:center; }
+.metric-label { color:var(--muted); font-size:12px; }
+.metric strong { display:block; font-size:clamp(20px,2.5vw,28px); margin:9px 0; letter-spacing:.01em; }
+.metric-note { color:#8297b1; font-size:11px; }
+.metric .method { font-size:20px; }
+.table-panel { margin-top:18px; overflow:hidden; }
+.table-wrap { overflow-x:auto; }
+table { border-collapse:collapse; width:100%; min-width:600px; }
+th,td { padding:12px 18px; text-align:left; border-top:1px solid var(--border); font-size:13px; }
+th { color:var(--muted); font-weight:500; background:#0f1928; }
+tbody tr.closest { background:#17324a; }
+footer { text-align:center; padding:24px 12px; color:#71859e; font-size:11px; }
+@media(max-width:900px) { .dashboard { grid-template-columns:1fr; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:none; } #map {height:440px;} }
+@media(max-width:560px) { .topbar { align-items:flex-start; flex-direction:column; } .metrics {grid-template-columns:1fr;} }
+
+.status.error { border-color:#a64b4b; color:#ffc0c0; white-space:normal; max-width:440px; }
+.status { max-width:440px; white-space:normal; }
+
+
+/* PDF export settings */
+.pdf-settings { margin-top:18px; padding-bottom:18px; }
+.pdf-options { display:grid; grid-template-columns:repeat(2,minmax(240px,1fr)); gap:10px 18px; padding:0 18px 14px; }
+.check-option { display:flex; align-items:flex-start; gap:9px; color:var(--text); font-size:14px; cursor:pointer; }
+.check-option input { margin-top:3px; accent-color:#2a91d2; width:16px; height:16px; }
+.pdf-actions { padding:0 18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.pdf-report { display:none; }
+@media(max-width:700px) { .pdf-options {grid-template-columns:1fr;} }
+
+/* Print-only report: A4 landscape, designed to fit one page. */
+@page { size: A4 landscape; margin: 9mm; }
+@media print {
+  body { background:#fff !important; color:#172434 !important; font-family:Arial,"Hiragino Kaku Gothic ProN",sans-serif; }
+  body.printing-report > * { display:none !important; }
+  body.printing-report > main { display:block !important; }
+  body.printing-report > main > * { display:none !important; }
+  body.printing-report #pdfReport { display:block !important; position:static; width:100%; color:#172434; }
+  .pdf-head { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #1b5c87; padding-bottom:8px; margin-bottom:10px; }
+  .pdf-kicker { color:#236b99; font-size:9pt; letter-spacing:.08em; font-weight:bold; }
+  .pdf-head h1 { font-size:20pt; margin:4px 0; color:#122b40; }
+  .pdf-head p { margin:2px 0; font-size:9pt; color:#526778; }
+  .pdf-created { text-align:right; font-size:8pt; line-height:1.5; color:#526778; }
+  .pdf-report section { margin:8px 0 10px; break-inside:avoid; }
+  .pdf-report h2 { font-size:11pt; margin:0 0 5px; color:#1c4c6b; border-left:3px solid #298ac2; padding-left:6px; }
+  .pdf-route { width:100%; max-height:230px; display:block; }
+  .pdf-map-section { break-inside:avoid; }
+  .pdf-map-copy { width:100% !important; height:220px !important; position:relative !important; border:1px solid #b8c7d1; border-radius:4px; }
+  .pdf-map-copy .leaflet-tile-pane, .pdf-map-copy .leaflet-overlay-pane, .pdf-map-copy .leaflet-marker-pane, .pdf-map-copy .leaflet-shadow-pane, .pdf-map-copy .leaflet-tooltip-pane { display:block !important; }
+  .pdf-map-copy .leaflet-tile { visibility:visible !important; opacity:1 !important; }
+  .pdf-map-copy .leaflet-control-container { display:none !important; }
+  .pdf-muted { font-size:8pt; color:#667788; margin:3px 0; }
+  .pdf-metrics { display:flex; gap:8px; flex-wrap:wrap; }
+  .pdf-metric { border:1px solid #c9d8e2; border-radius:5px; padding:7px 10px; min-width:180px; flex:1; }
+  .pdf-metric span { display:block; font-size:8pt; color:#526778; }
+  .pdf-metric strong { display:block; font-size:14pt; margin-top:3px; color:#142c40; }
+  .pdf-foot { border-top:1px solid #c9d8e2; margin-top:8px; padding-top:5px; font-size:7pt; color:#647586; line-height:1.35; }
+}
+
+/* v0.4 movement table */
+.table-panel table { min-width: 900px; }
+.pdf-table-wrap { overflow: visible; margin-top:5px; }
+.pdf-track-table { width:100%; min-width:0; border-collapse:collapse; table-layout:auto; }
+.pdf-track-table th,.pdf-track-table td { border:1px solid #cbd8e1; padding:3px 5px; font-size:7.2pt; color:#243747; white-space:nowrap; }
+.pdf-track-table th { background:#eaf1f5; font-weight:bold; }
+.pdf-track-table tr:nth-child(even) td { background:#f7fafc; }
+@media print {
+  .pdf-route { max-height:150px; }
+  .pdf-report section { break-inside:auto; }
+  .pdf-track-table thead { display:table-header-group; }
+  .pdf-track-table tr { break-inside:avoid; }
+}
+
+.map-layer-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 12px;margin-bottom:8px}.map-layer-controls label{display:flex;gap:4px;align-items:center}
+
+/* v0.5 geographic graticule labels */
+.grid-label { background:rgba(13,27,42,.78); border:1px solid rgba(160,190,210,.45); border-radius:3px; color:#e8f2f8; font:11px/16px system-ui,sans-serif; padding:0 3px; white-space:nowrap; text-align:center; }
+
+/* v0.6 JMA information history */
+.genesis-report{margin:12px 0;padding:12px;border:1px solid #31475a;border-radius:8px;background:rgba(12,28,43,.55)}
+.genesis-report h3{margin:0 0 5px;font-size:1rem}
+.genesis-report small{color:#a9c0d1}
+.genesis-hint{margin:10px 0;padding:8px 10px;border-left:3px solid #e5ad4b;background:rgba(229,173,75,.08)}
+.genesis-hint p{margin:5px 0}
+.genesis-body{white-space:normal;line-height:1.65;margin-top:8px}
+
+.forecast-history-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0;padding:10px}
+.forecast-history-controls label{font-weight:700}
+.forecast-history-controls select{min-width:240px;max-width:100%;padding:7px}
+.forecast-history-controls small{width:100%;color:#667085}
+.historical-forecast-legend{font-size:12px;color:#a85c16}
+
+.forecast-comparison-panel{margin-top:18px}
+.forecast-distance-chart{width:100%;overflow-x:auto;min-height:180px}
+.forecast-distance-chart svg{width:100%;min-width:420px;height:auto;display:block}
+.forecast-comparison-panel table{font-size:13px}
+.forecast-comparison-panel .panel-heading{align-items:center}
+
+.map-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:600}
+.legend-current{color:#e45b58}.legend-past{color:#d58a13}.legend-station{color:#168bd2}
+
+/* PDF report uses one freshly rendered geographic map image, not a cloned screen map plus schematic. */
+.pdf-generated-map { display:block; width:100%; height:auto; max-height:360px; object-fit:contain; border:1px solid #b8c7d1; border-radius:5px; background:#e8eef2; }
+@media print { .pdf-generated-map { width:100%; max-height:360px; object-fit:contain; } }

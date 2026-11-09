@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>父島台風トラッカー | Typhoon Archive</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">OGASAWARA / CHICHIJIMA</p>
+      <h1>父島 台風トラッカー</h1>
+      <p class="subtitle">父島アメダスを基準に、台風の経路と最接近を確認</p>
+    </div>
+    <div class="status" id="statusBox"><span class="dot"></span> <span id="statusText">気象庁データを読み込み中…</span></div>
+  </header>
+
+  <main>
+    <section class="controls panel">
+      <div class="control">
+        <label for="typhoonSelect">台風</label>
+        <select id="typhoonSelect"></select>
+      </div>
+      <div class="control">
+        <label for="trackType">表示する経路</label>
+        <select id="trackType">
+          <option value="forecast">発表中の台風・予報経路</option>
+          <option value="besttrack">過去台風の経路（時刻なし）</option>
+        </select>
+      </div>
+      <button id="fitButton" type="button">経路全体を表示</button>
+    </section>
+
+    <section class="dashboard">
+      <div class="map-panel panel">
+        <div class="panel-heading">
+          <div><h2 id="stormTitle">台風経路図</h2><p id="stormSubtitle">赤：台風経路　青：父島アメダス</p></div>
+          <span class="small">基準地点：父島（44301）</span>
+        </div>
+        <div class="map-layer-controls panel"><b>地図レイヤー</b><label><input id="showGraticule" type="checkbox" checked>経緯線（自動：0.2°／0.5°／1°）</label><label><input id="baseMapTopo" type="checkbox">地形図（OpenTopoMap）</label><label><input id="layerForecastCircle" type="checkbox" checked>予報円</label><label><input id="layerStormWind" type="checkbox" checked>暴風域</label><label><input id="layerStrongWind" type="checkbox" checked>強風域</label><label><input id="layerStormWarning" type="checkbox" checked>暴風警戒域</label><small>データに範囲情報がある場合のみ描画</small></div><div class="forecast-history-controls panel">
+          <label for="forecastHistorySelect">過去の予報初期値</label>
+          <select id="forecastHistorySelect"><option value="">履歴を読み込んでいません</option></select>
+          <button id="showForecastHistory" type="button">過去予報を重ねる</button>
+          <button id="clearForecastHistory" type="button">過去予報を消す</button>
+          <small id="forecastHistoryStatus">自動収集履歴が利用可能な場合に表示します。</small>
+          <div class="map-legend"><span class="legend-current">● 現在の経路</span><span class="legend-past">┄┄ 過去予報</span><span class="legend-station">● 父島アメダス</span></div>
+        </div>
+        <div id="map" role="application" aria-label="台風経路地図"></div>
+        <p class="disclaimer" id="disclaimer">気象庁公開データを読み込みます。公式情報の代替ではありません。</p>
+      </div>
+
+      <aside class="metrics">
+        <article class="metric panel"><span class="metric-label">最接近時刻（JST）</span><strong id="closestTime">—</strong><span class="metric-note">サンプル経路から算出</span></article>
+        <article class="metric panel"><span class="metric-label">最接近距離</span><strong id="closestDistance">—</strong><span class="metric-note">台風中心から父島アメダス</span></article>
+        <article class="metric panel"><span class="metric-label">父島から見た台風中心の方角</span><strong id="closestDirection">—</strong><span class="metric-note" id="closestBearing">—</span></article>
+        <article class="metric panel"><span class="metric-label">最接近時の中心位置</span><strong id="closestPosition">—</strong><span class="metric-note">緯度・経度</span></article>
+        <article class="metric panel"><span class="metric-label">実況の中心気圧</span><strong id="closestPressure">—</strong><span class="metric-note">気象庁データに記載がある場合</span></article>
+        <article class="metric panel"><span class="metric-label">実況の最大風速</span><strong id="closestWind">—</strong><span class="metric-note">中心付近の最大風速</span></article>
+        <article class="metric panel"><span class="metric-label">距離の算出方法</span><strong class="method">大圏距離</strong><span class="metric-note">Haversine公式 + 経路点間の補間推定</span></article>
+      </aside>
+    </section>
+
+
+
+    <section class="panel genesis-panel"><h2>発生履歴（全般台風情報）</h2><p id="genesisTimeline">熱帯低気圧発生・台風発生日時は、気象庁防災情報XMLの発生通知を照合して表示します。</p><small>熱帯低気圧の発生と台風への発達は別イベントです。公開JSONに履歴が含まれない場合、発表時刻から推定しません。</small></section><section class="panel forecast-comparison-panel">
+      <div class="panel-heading"><div><h2>予報初期値ごとの父島最接近距離</h2><p>保存された各スナップショットの予報経路から算出した推定値</p></div>
+      <button id="compareForecastHistory" type="button">履歴を比較</button></div>
+      <p id="forecastCompareStatus" class="small">過去予報の自動保存履歴がある場合に比較できます。</p>
+      <div id="forecastDistanceChart" class="forecast-distance-chart"></div>
+      <div class="table-wrap"><table><thead><tr><th>保存・取得時刻</th><th>発表時刻</th><th>予報最接近距離</th><th>予報最接近時刻</th></tr></thead><tbody id="forecastCompareRows"><tr><td colspan="4">履歴比較は未実行です。</td></tr></tbody></table></div>
+    </section>
+    <section class="panel pdf-settings">
+      <div class="panel-heading">
+        <div><h2>自治体向けPDF出力</h2><p>掲載項目をチェックして、A4横向き・1ページの資料を作成</p></div>
+      </div>
+      <div class="pdf-options">
+        <label class="check-option"><input type="checkbox" id="pdfPastTrack" checked> 過去の台風経路（実況・ベストトラック）</label>
+        <label class="check-option"><input type="checkbox" id="pdfForecast" checked> 今後の予想中心位置・予報経路</label>
+        <label class="check-option"><input type="checkbox" id="pdfClosestTime" checked> 父島アメダスへの最接近時刻</label>
+        <label class="check-option"><input type="checkbox" id="pdfClosestDistance" checked> 最接近時の台風中心までの距離</label>
+        <label class="check-option"><input type="checkbox" id="pdfClosestDirection" checked> 最接近時の台風中心の方角</label>
+        <label class="check-option"><input type="checkbox" id="pdfStrongWind" checked> 強風域（黄色円）</label>
+        <label class="check-option"><input type="checkbox" id="pdfStormWind" checked> 暴風域（赤色円）</label>
+        <label class="check-option"><input type="checkbox" id="pdfStormWarning" checked> 暴風警戒域（紫色の接続領域）</label>
+      </div>
+      <div class="pdf-actions">
+        <button id="pdfButton" type="button">PDF出力（印刷画面を開く）</button>
+        <span class="small">ブラウザの印刷画面で「PDFとして保存」を選択してください。</span>
+      </div>
+    </section>
+
+    <section id="pdfReport" class="pdf-report" aria-hidden="true"></section>
+
+    <section class="panel table-panel">
+      <div class="panel-heading"><div><h2>経路データ</h2><p>日時・座標に加え、隣接する中心位置から移動速度と移動方向を計算（概算）</p></div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>時刻（JST）</th><th>緯度</th><th>経度</th><th>父島からの距離</th><th>父島から見た方角</th><th>移動速度</th><th>移動方向</th></tr></thead>
+          <tbody id="trackRows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer>個人開発プロジェクト。気象庁公式サイトの公開データを加工して表示しています。公式の防災情報の代替ではありません。</footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
