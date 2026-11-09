@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-09T21:03:52.773659+00:00",
+  "updatedAt": "2026-11-09T21:58:40.193150+00:00",
   "storms": {
     "TC2638": {
       "typhoonNumber": "2632",
@@ -29,6 +29,14 @@
           "sha256": "e0dcc2fe7e2bf5a9ab6b6804b1dd1b6f8678515b0a176cf47f0317f04c14d903",
           "checks": 3,
           "lastSeenAt": "2026-11-09T21:03:52.773659+00:00"
+        },
+        {
+          "capturedAt": "2026-11-09T21:58:40.193150+00:00",
+          "sourceIssueTime": "2026-11-10T06:45:00+09:00",
+          "file": "TC2638/20261109T215840+0000.json",
+          "sha256": "e29c6f4e2b8de92afe963fe02295d6ef3265ce6bccac74a44efe8b74069b284e",
+          "checks": 1,
+          "lastSeenAt": "2026-11-09T21:58:40.193150+00:00"
         }
       ]
     }
