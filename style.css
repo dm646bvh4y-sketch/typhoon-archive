@@ -125,3 +125,30 @@ footer { text-align:center; padding:24px 12px; color:#71859e; font-size:11px; }
 /* PDF report uses one freshly rendered geographic map image, not a cloned screen map plus schematic. */
 .pdf-generated-map { display:block; width:100%; height:auto; max-height:360px; object-fit:contain; border:1px solid #b8c7d1; border-radius:5px; background:#e8eef2; }
 @media print { .pdf-generated-map { width:100%; max-height:360px; object-fit:contain; } }
+
+/* Phase 2: PDF map preserves Web-Mercator aspect ratio and can be omitted. */
+.pdf-generated-map {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+@media print {
+  @page { size: A4 landscape; margin: 8mm; }
+  .pdf-map-section { width: 100%; }
+  .pdf-generated-map {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 330mm;
+    object-fit: contain;
+  }
+}
+
+/* Phase 3: public JMA XML bulletin archive */
+.jma-xml-entries{display:grid;gap:10px;margin-top:12px}
+.jma-xml-entry{border:1px solid var(--border,#d5e0e8);border-radius:8px;padding:12px;background:var(--panel-bg,#fff)}
+.jma-xml-entry h3{font-size:1rem;margin:0 0 5px}
+.jma-xml-entry small{display:block;color:var(--muted,#667);overflow-wrap:anywhere}
+.jma-xml-entry p{margin:8px 0 0;font-size:.9rem}

@@ -1,28 +1,5 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-09T12:08:47.252020+00:00",
-  "storms": {
-    "TC2638": {
-      "typhoonNumber": "2632",
-      "name": null,
-      "snapshots": [
-        {
-          "capturedAt": "2026-11-09T08:14:19.239734+00:00",
-          "sourceIssueTime": "2026-11-09T15:45:00+09:00",
-          "file": "TC2638/20261109T081419+0000.json",
-          "sha256": "a0f9feb060d2aa03c165cf90547fff21b08ea362b556f09889c9ef5a004040dc",
-          "checks": 2,
-          "lastSeenAt": "2026-11-09T09:25:46.954367+00:00"
-        },
-        {
-          "capturedAt": "2026-11-09T11:10:21.256719+00:00",
-          "sourceIssueTime": "2026-11-09T18:45:00+09:00",
-          "file": "TC2638/20261109T111021+0000.json",
-          "sha256": "18b2ba990915e17b9b712e2acdb071e6e50fc250daff1db46fb4905e73196c37",
-          "checks": 2,
-          "lastSeenAt": "2026-11-09T12:08:47.252020+00:00"
-        }
-      ]
-    }
-  }
+  "updatedAt": null,
+  "storms": {}
 }

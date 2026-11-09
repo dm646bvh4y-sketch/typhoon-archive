@@ -128,3 +128,36 @@ These JMA URLs are website JSON endpoints and are not guaranteed to be a version
 
 ### 暴風警戒域の接続表示（開発版）
 各予報中心に描画する暴風警戒域円の半径を使用し、進路の左右側にある円周接点をつないだ近似領域を紫色で表示します。各予報中心の警戒域円も破線で個別表示します。PDF経路図にも接続領域と各円を描画します。これは可視化上の近似であり、気象庁の公式暴風警戒域の形状を再現するものではありません。
+
+## Phase 2 / Phase 3 updates (2026-11)
+
+### Municipal PDF output
+- PDF report options include the map image, past track, forecast track, closest approach metrics, wind circles, and storm-warning corridor independently.
+- The generated map is rendered with a dynamically calculated canvas aspect ratio and uses `object-fit: contain` in print output to avoid distortion.
+- Use the browser print dialog and choose **Save as PDF**. Check/uncheck `地図画像`, `地図上の台風経路・中心位置`, and `今後の予想中心位置・予報経路` independently. The map bitmap dimensions are calculated before canvas creation to preserve the map aspect ratio.
+
+### JMA public XML archive
+- `scripts/archive_jma_xml.py` pulls the official JMA public Atom feeds (`extra`, `extra_l`, `regular`, `regular_l`), filters typhoon/tropical-cyclone-related entries, stores original XML and basic parsed metadata under `data/xml-archive/`, and updates `index.json`.
+- The GitHub Actions archive workflow runs both forecast snapshot archival and XML bulletin archival, and commits `data/archive` plus `data/xml-archive`.
+- The page lists recent archived XML entries and links to the original JMA XML, archived raw XML, and parsed metadata JSON. The UI distinguishes feed source from the locally archived XML file.
+- JMA public XML PULL feed is best-effort; delays, maintenance, or feed changes may affect retrieval. The archive only contains entries captured after the workflow is enabled; it does not retroactively reconstruct older feed messages.
+- The XML archive is a general bulletin archive (title filtering for typhoon/tropical-cyclone terms), not yet a fully normalized typhoon lifecycle database. Schema-specific structured parsing and timeline linkage can be expanded in Phase 1.
+
+## Phase 3: JMA typhoon genesis (first bulletin only)
+
+The XML collector (`scripts/archive_jma_xml.py`) polls the public JMA PULL Atom feeds and stores only typhoon-related **VPZJ51 / 全般気象解説情報 第1号** messages that explicitly contain a genesis date/time. Later bulletins (第2号以降) are ignored. The script does not substitute bulletin issue time for genesis time.
+
+- Raw XML and parsed JSON are stored in `data/xml-archive/`.
+- `data/xml-archive/index.json` is used by the Typhoon Archive site to show genesis date/time.
+- `.github/workflows/archive-jma-genesis.yml` polls every 5 minutes (GitHub Actions schedules can be delayed).
+- The hourly forecast archive is kept separate in `archive-forecasts.yml`.
+- JMA PULL feeds have limited retention and can be delayed or unavailable; the collector cannot recover a first bulletin after it has disappeared from the feeds unless it was previously archived.
+- The extraction targets statements such as `7日12時 ... 熱帯低気圧が台風第32号になりました`. If the XML body uses an unexpected wording/schema, the collector logs a skipped first issue rather than guessing.
+
+Run locally from the project root:
+
+```bash
+python3 scripts/archive_jma_xml.py
+```
+
+The public site reads the committed `data/xml-archive/index.json`; local testing requires serving the project through HTTP (e.g. `python3 -m http.server 8000`), not opening `index.html` as a file.

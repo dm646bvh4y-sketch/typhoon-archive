@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 2,
+  "productCode": "VPZJ51",
+  "feed": "extra_l",
+  "id": "https://www.data.jma.go.jp/developer/xml/data/20261107042245_0_VPZJ51_010000.xml",
+  "title": "全般気象解説情報",
+  "summary": "",
+  "serial": 1,
+  "typhoonNumber": 32,
+  "eventKey": "2026-32-2026-11-07T12:00+09:00",
+  "issueDateTime": "2026-11-07T13:22:00+09:00",
+  "genesisDateTime": "2026-11-07T12:00+09:00",
+  "sourceUrl": "https://www.data.jma.go.jp/developer/xml/data/20261107042245_0_VPZJ51_010000.xml",
+  "sha256": "041d3a43bf590d9196126c72313ea137ef0ef4a25a94738b9b8fba2f02461202",
+  "archivedAt": "2026-11-09T12:14:50+00:00",
+  "xmlFile": "041d3a43bf590d9196126c72.xml",
+  "parsed": {
+    "Title": [
+      "全般気象解説情報",
+      "全般気象解説情報（台風第３２号）"
+    ],
+    "DateTime": [
+      "2026-11-07T04:22:44Z",
+      "2026-11-07T13:22:00+09:00"
+    ],
+    "Status": [
+      "通常"
+    ],
+    "PublishingOffice": [
+      "気象庁"
+    ],
+    "ReportDateTime": [
+      "2026-11-07T13:22:00+09:00"
+    ],
+    "TargetDateTime": [
+      "2026-11-07T13:22:00+09:00"
+    ],
+    "EventID": [
+      "ZJPTK260068"
+    ],
+    "InfoType": [
+      "発表"
+    ],
+    "Serial": [
+      "1"
+    ],
+    "InfoKind": [
+      "気象解説情報"
+    ],
+    "InfoKindVersion": [
+      "1.5_0"
+    ],
+    "Text": [
+      "台風第３２号が発生しました。",
+      "７日１２時、マリアナ諸島の北緯１９度１０分、東経１４３度３０分において、熱帯低気圧が台風第３２号になりました。台風は１時間におよそ３５キロの速さで西へ進んでいます。中心の気圧は１００２ヘクトパスカル、中心付近の最大風速は１８メートル、最大瞬間風速は２５メートルで中心の北側２８０キロ以内と南側１６５キロ以内では風速１５メートル以上の強い風が吹いています。"
+    ]
+  }
+}

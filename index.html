@@ -64,7 +64,8 @@
 
 
 
-    <section class="panel genesis-panel"><h2>発生履歴（全般台風情報）</h2><p id="genesisTimeline">熱帯低気圧発生・台風発生日時は、気象庁防災情報XMLの発生通知を照合して表示します。</p><small>熱帯低気圧の発生と台風への発達は別イベントです。公開JSONに履歴が含まれない場合、発表時刻から推定しません。</small></section><section class="panel forecast-comparison-panel">
+    <section class="panel jma-xml-panel"><div class="panel-heading"><div><h2>気象庁XML・台風発生第1号アーカイブ</h2><p>全般気象解説情報（VPZJ51）の第1号のみを取得・解析</p></div><button id="reloadJmaXml" type="button">XML履歴を更新</button></div><p id="jmaXmlStatus" class="small">XMLアーカイブを読み込み中…</p><div id="jmaXmlEntries" class="jma-xml-entries"></div><small>気象庁公開PULLフィードから台風発生を記載した第1号のみ保存します。第2号以降は対象外。配信遅延・停止時や保持期間経過後は取得できない場合があります。</small></section>
+    <section class="panel genesis-panel"><h2>発生履歴（全般台風情報）</h2><p id="genesisTimeline">選択中の台風について、保存済みの全般気象解説情報 第1号から発生日時を表示します。</p><small>熱帯低気圧の発生と台風への発達は別イベントです。第1号本文に発生時刻の明記がない場合、発表時刻から推定しません。</small></section><section class="panel forecast-comparison-panel">
       <div class="panel-heading"><div><h2>予報初期値ごとの父島最接近距離</h2><p>保存された各スナップショットの予報経路から算出した推定値</p></div>
       <button id="compareForecastHistory" type="button">履歴を比較</button></div>
       <p id="forecastCompareStatus" class="small">過去予報の自動保存履歴がある場合に比較できます。</p>
@@ -76,6 +77,8 @@
         <div><h2>自治体向けPDF出力</h2><p>掲載項目をチェックして、A4横向き・1ページの資料を作成</p></div>
       </div>
       <div class="pdf-options">
+        <label class="check-option"><input type="checkbox" id="pdfMap" checked> 地図画像（地形図・台風位置図）</label>
+        <label class="check-option"><input type="checkbox" id="pdfMapTrack" checked> 地図上の台風経路・中心位置</label>
         <label class="check-option"><input type="checkbox" id="pdfPastTrack" checked> 過去の台風経路（実況・ベストトラック）</label>
         <label class="check-option"><input type="checkbox" id="pdfForecast" checked> 今後の予想中心位置・予報経路</label>
         <label class="check-option"><input type="checkbox" id="pdfClosestTime" checked> 父島アメダスへの最接近時刻</label>

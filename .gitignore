@@ -1,4 +1,9 @@
-data/
+data/*
+!data/xml-archive/
+!data/xml-archive/**
+
 __pycache__/
+
 .DS_Store
+
 .env

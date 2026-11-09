@@ -484,48 +484,53 @@ async function loadJmaBulletinHistory(tc){
   const node=$("genesisTimeline");
   if(!node) return;
   const typhoonNo=reportTyphoonNumber(tc);
-  if(!typhoonNo){node.textContent="台風番号を取得できないため、情報検索をスキップしました。";return;}
-  node.innerHTML="<p>気象庁の全般台風情報・全般気象解説情報一覧を検索中…</p>";
+  if(!typhoonNo){node.textContent="台風番号を取得できないため、発生履歴を絞り込めません。";return;}
+  node.innerHTML="<p>保存済みの気象庁XML・台風発生第1号を読み込み中…</p>";
   try{
-    const list=await getJSON(JMA_INFO_LIST);
-    if(!Array.isArray(list)) throw new Error("情報一覧JSONの形式が配列ではありません");
-    const numberText=`台風第${typhoonNo}号`;
-    const candidates=list.filter(item=>{
-      const title=String(item.headTitle||"");
-      const ctl=String(item.controlTitle||"");
-      const isTyphoonGeneral=ctl.includes("全般台風情報") || ctl.includes("全般気象解説情報");
-      return isTyphoonGeneral && title.includes("台風") &&
-        (title.includes(numberText) || title.includes(`台風${typhoonNo}号`));
-    }).sort((a,b)=>new Date(b.reportDatetime)-new Date(a.reportDatetime));
-    if(!candidates.length){
-      node.innerHTML=`<p>一覧JSON内に「${escapeHTML(numberText)}」の全般気象解説情報は見つかりませんでした。</p><p><a target="_blank" rel="noopener" href="https://www.jma.go.jp/bosai/information/#format=table&area_type=japan&area_code=010000">気象庁公式情報一覧を開く</a></p>`;
+    const response=await fetch("data/xml-archive/index.json?ts="+Date.now(),{cache:"no-store"});
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const archive=await response.json();
+    const target=`台風第${typhoonNo}号`;
+    // JMA XML titles are often generic (「全般気象解説情報」),
+    // so match by parsed metadata rather than title/summary text.
+    const entries=(archive.entries||[]).filter(e=>
+      Number(e.typhoonNumber)===Number(typhoonNo) && Number(e.serial)===1
+    ).sort((a,b)=>new Date(b.genesisDateTime||0)-new Date(a.genesisDateTime||0));
+    if(!entries.length){
+      node.innerHTML=`<p>${escapeHTML(target)}の発生情報（全般気象解説情報 第1号）はまだ保存されていません。</p><small>XML取得はGitHub Actionsの定期実行です。PULLフィードの保持期間外に発表された電文は、後から取得できない場合があります。</small>`;
       return;
     }
-    const details=await Promise.all(candidates.slice(0,12).map(async item=>{
-      try{
-        const d=await getJSON(`${JMA_INFO_DETAIL}${encodeURIComponent(item.jsonName)}.json`);
-        return {meta:item,detail:d};
-      }catch(e){return {meta:item,detail:null,error:e.message};}
-    }));
-    const reportRows=details.map(({meta,detail,error})=>{
-      const dt=meta.reportDatetime?fmtTime(meta.reportDatetime):"発表時刻不明";
-      const title=meta.headTitle||"全般気象解説情報";
-      const text=detail?.commentText||detail?.headlineText||"本文データを取得できませんでした。";
-      const hints=eventHint(text,meta.reportDatetime);
-      const hintHtml=hints.length?hints.map(h=>`<div class="genesis-hint"><b>${escapeHTML(h.label)}</b><p>${escapeHTML(h.text)}</p></div>`).join(""):"";
-      return `<article class="genesis-report"><h3>${escapeHTML(title)} 第${escapeHTML(meta.serial||"—")}号</h3><small>${escapeHTML(dt)} · ${escapeHTML(meta.publishingOffice||"気象庁")} · ${escapeHTML(meta.infoType||"")}</small>
-        <p>${escapeHTML(detail?.headlineText||"")}</p>${hintHtml}
-        <details><summary>情報本文を表示</summary><div class="genesis-body">${String(text).replace(/<br\s*\/?>/gi,"\n").split("\n").map(escapeHTML).join("<br>")}</div></details>
-        <p><a href="https://www.jma.go.jp/bosai/information/#area_type=japan&info_id=${encodeURIComponent(meta.jsonName)}&format=text&area_code=010000&japan_page=0" target="_blank" rel="noopener">気象庁で本文を確認</a></p>
-        ${error?`<small>取得エラー: ${escapeHTML(error)}</small>`:""}</article>`;
+    node.innerHTML=entries.map(e=>{
+      const genesis=e.genesisDateTime?fmtTime(e.genesisDateTime):"発生日時不明";
+      const issued=e.issueDateTime?fmtTime(e.issueDateTime):"発表日時不明";
+      const source=e.sourceUrl||"https://xml.kishou.go.jp/xmlpull/";
+      const xml=e.xmlFile?`<a href="data/xml-archive/${encodeURIComponent(e.xmlFile)}" target="_blank" rel="noopener">保存XML</a>`:"";
+      const meta=e.file?`<a href="data/xml-archive/${encodeURIComponent(e.file)}" target="_blank" rel="noopener">解析JSON</a>`:"";
+      return `<article class="genesis-report"><h3>${escapeHTML(target)} 発生情報（${escapeHTML(e.title||"全般気象解説情報")} 第1号）</h3><p><strong>発生日時：${escapeHTML(genesis)}</strong></p><small>第1号発表日時：${escapeHTML(issued)} · VPZJ51</small><p><a href="https://www.jma.go.jp/bosai/information/#format=table&area_type=japan&area_code=010000" target="_blank" rel="noopener">気象庁公式情報一覧</a> · <a href="${escapeHTML(source)}" target="_blank" rel="noopener">原文XML配信元</a> · ${xml} ${meta}</p></article>`;
     }).join("");
-    node.innerHTML=`<p>気象庁情報一覧JSONから ${candidates.length} 件を検出（表示は最大12件）。発表日時は電文の発表時刻であり、台風の発生時刻とは区別しています。</p>${reportRows}
-      <small>発生・発達時刻は本文に明記された記述を手掛かりとして表示します。記述が見つからない場合、発表日時を発生時刻として代用しません。</small>`;
+    node.insertAdjacentHTML("beforeend","<small>発生日時は第1号本文に明記された時刻を抽出しています。第2号以降の発表時刻で置き換えていません。</small>");
   }catch(error){
-    node.innerHTML=`<p>気象庁情報一覧JSONの取得に失敗しました：${escapeHTML(error.message)}</p><p>Safariの通信/CORS制限、または気象庁内部JSONの仕様変更の可能性があります。</p><a href="https://www.jma.go.jp/bosai/information/#format=table&area_type=japan&area_code=010000" target="_blank" rel="noopener">気象庁公式一覧を開く</a>`;
+    node.innerHTML=`<p>発生履歴の読み込みに失敗しました：${escapeHTML(error.message)}</p><small>data/xml-archive/index.json と GitHub Pages の公開状態を確認してください。</small>`;
   }
 }
 
+// JMA XML archive: collected by scripts/archive_jma_xml.py / GitHub Actions.
+async function loadJmaXmlArchive(){
+  const status=$("jmaXmlStatus"), list=$("jmaXmlEntries");
+  if(!status||!list)return;
+  status.textContent="保存済みXMLアーカイブを読み込み中…";
+  try{
+    const res=await fetch("data/xml-archive/index.json?ts="+Date.now(),{cache:"no-store"});
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    const idx=await res.json();
+    const entries=(idx.entries||[]).slice(0,25);
+    status.textContent=`最終更新：${idx.updatedAt?new Date(idx.updatedAt).toLocaleString("ja-JP",{timeZone:"Asia/Tokyo"}):"不明"} · 保存電文 ${idx.entries?.length||0} 件（最新25件を表示）`;
+    if(!entries.length){list.innerHTML="<p>まだXML電文が保存されていません。GitHub ActionsでXMLアーカイブ処理を実行すると表示されます。</p>";return;}
+    list.innerHTML=entries.map(e=>`<article class="jma-xml-entry"><h3>${escapeHTML(e.title||"気象庁XML電文")}</h3><small>${escapeHTML(e.feed||"")} · ${escapeHTML(e.feedUpdatedAt||"発表時刻不明")}</small><p><a href="${escapeHTML(e.sourceUrl||"https://xml.kishou.go.jp/")}" target="_blank" rel="noopener">気象庁の原文</a> · <a href="data/xml-archive/${encodeURIComponent(e.xmlFile||e.file)}" target="_blank" rel="noopener">保存XML</a> · <a href="data/xml-archive/${encodeURIComponent(e.file)}" target="_blank" rel="noopener">解析・メタデータJSON</a></p></article>`).join("");
+  }catch(err){status.textContent=`XMLアーカイブの読み込みに失敗しました：${err.message}`;list.innerHTML="<p>ネットワークまたはGitHub Pages上のデータ配置を確認してください。</p>";}
+}
+$("reloadJmaXml")?.addEventListener("click",loadJmaXmlArchive);
+loadJmaXmlArchive();
 
 // Forecast history archive: generated by scripts/archive_forecasts.py / GitHub Actions.
 let forecastArchiveIndex = null;
@@ -537,7 +542,8 @@ async function loadForecastArchiveOptions(code){
   selectedArchiveSnapshot=null;
   try{
     if(!forecastArchiveIndex){
-      const response=await fetch("data/archive/index.json",{cache:"no-store"});
+      const archiveIndexUrl=new URL("data/archive/index.json",document.baseURI);
+      const response=await fetch(archiveIndexUrl.toString(),{cache:"no-store"});
       if(!response.ok) throw new Error(`履歴index HTTP ${response.status}`);
       forecastArchiveIndex=await response.json();
     }
@@ -560,7 +566,7 @@ async function loadForecastArchiveOptions(code){
     select.dataset.archiveLength=String(snapshots.length);
   }catch(e){
     select.innerHTML='<option value="">保存履歴を読み込めません</option>';
-    status.textContent="履歴indexが未作成、未公開、または通信エラーです。自動収集開始前は正常です。";
+    status.textContent=`履歴indexの読み込みエラー：${e.message}。公開先のdata/archive/index.json、GitHub Pagesの反映、JSON形式を確認してください。`;
   }
 }
 async function showSelectedArchivedForecast(){
@@ -611,7 +617,8 @@ async function compareForecastSnapshots(){
   if(!code){status.textContent="台風を選択して、履歴が存在する状態で実行してください。";return;}
   try{
     if(!forecastArchiveIndex){
-      const r=await fetch("data/archive/index.json",{cache:"no-store"});
+      const archiveIndexUrl=new URL("data/archive/index.json",document.baseURI);
+      const r=await fetch(archiveIndexUrl.toString(),{cache:"no-store"});
       if(!r.ok)throw new Error(`index HTTP ${r.status}`);
       forecastArchiveIndex=await r.json();
     }
@@ -854,7 +861,10 @@ function loadPdfTile(url){
   });
 }
 async function makePdfMapImage(points,pdfLayers){
-  const W=1200,H=650;
+  // The map is drawn in Web-Mercator coordinates with equal X/Y scale.
+  // H is calculated from the geographic extent to prevent horizontal/vertical stretching.
+  const W=1200;
+  let H=650;
   const valid=(points||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lon));
   if(!valid.length)return "";
   const allLat=valid.map(p=>p.lat).concat([STATION.lat]);
@@ -873,12 +883,16 @@ async function makePdfMapImage(points,pdfLayers){
   const xNorm=lon=> (lon-minLon)/(maxLon-minLon);
   const yNorm=lat=> (mercatorY(lat)-top)/(bottom-top);
   const px=lon=>xNorm(lon)*W, py=lat=>yNorm(lat)*H;
-  const canvas=document.createElement("canvas");canvas.width=W;canvas.height=H;
-  const ctx=canvas.getContext("2d");ctx.fillStyle="#e5edf0";ctx.fillRect(0,0,W,H);
   const topo=!!baseMapCheckbox?.checked;
   // Pick a tile zoom suitable for the extent and output size.
   const z=Math.max(3,Math.min(topo?9:10,Math.floor(Math.log2(W/(maxLon-minLon)*360/256))));
   const n=Math.pow(2,z),x0=lonTileX(minLon,z),x1=lonTileX(maxLon,z),y0=latTileY(maxLat,z),y1=latTileY(minLat,z);
+  // Calculate the final canvas dimensions before creating it. Web-Mercator
+  // uses equal pixel scale in X/Y; changing H after canvas creation would
+  // leave the bitmap at its old height and distort/crop the rendered map.
+  H=Math.max(1,Math.min(1000,Math.round(W*(y1-y0)/(x1-x0))));
+  const canvas=document.createElement("canvas");canvas.width=W;canvas.height=H;
+  const ctx=canvas.getContext("2d");ctx.fillStyle="#e5edf0";ctx.fillRect(0,0,W,H);
   const tx0=Math.floor(x0),tx1=Math.floor(x1),ty0=Math.floor(y0),ty1=Math.floor(y1);
   const jobs=[];
   for(let ty=ty0;ty<=ty1;ty++)for(let tx=tx0;tx<=tx1;tx++){
@@ -914,11 +928,13 @@ async function makePdfMapImage(points,pdfLayers){
     if(pdfLayers.strongWind)radius(p,p.strongWindRadiusKm,"#d8a900","rgba(240,196,0,.12)");
     if(pdfLayers.stormWind)radius(p,p.stormWindRadiusKm,"#d92323","rgba(229,57,53,.12)");
   });
-  if(valid.length>1){
-    ctx.beginPath();valid.forEach((p,i)=>i?ctx.lineTo(px(p.lon),py(p.lat)):ctx.moveTo(px(p.lon),py(p.lat)));
-    ctx.strokeStyle="#e44d4d";ctx.lineWidth=5;ctx.stroke();
+  if(pdfLayers.track){
+    if(valid.length>1){
+      ctx.beginPath();valid.forEach((p,i)=>i?ctx.lineTo(px(p.lon),py(p.lat)):ctx.moveTo(px(p.lon),py(p.lat)));
+      ctx.strokeStyle="#e44d4d";ctx.lineWidth=5;ctx.stroke();
+    }
+    valid.forEach(p=>{ctx.beginPath();ctx.arc(px(p.lon),py(p.lat),7,0,Math.PI*2);ctx.fillStyle="#e44d4d";ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke();});
   }
-  valid.forEach(p=>{ctx.beginPath();ctx.arc(px(p.lon),py(p.lat),7,0,Math.PI*2);ctx.fillStyle="#e44d4d";ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke();});
   ctx.beginPath();ctx.arc(px(STATION.lon),py(STATION.lat),10,0,Math.PI*2);ctx.fillStyle="#168bd2";ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=3;ctx.stroke();
   ctx.font="bold 20px sans-serif";ctx.fillStyle="#075b8d";ctx.fillText("父島アメダス",px(STATION.lon)+14,py(STATION.lat)-12);
   ctx.font="16px sans-serif";ctx.fillStyle="#233";ctx.fillText(`${minLon.toFixed(1)}°E–${maxLon.toFixed(1)}°E / ${minLat.toFixed(1)}°N–${maxLat.toFixed(1)}°N`,16,H-15);
@@ -927,6 +943,8 @@ async function makePdfMapImage(points,pdfLayers){
 
 async function buildPdfReport() {
   const selected = {
+    map: $("pdfMap").checked,
+    mapTrack: $("pdfMapTrack").checked,
     past: $("pdfPastTrack").checked,
     forecast: $("pdfForecast").checked,
     time: $("pdfClosestTime").checked,
@@ -936,11 +954,11 @@ async function buildPdfReport() {
     stormWind: $("pdfStormWind").checked,
     stormWarning: $("pdfStormWarning").checked
   };
-  const pdfLayers={strongWind:selected.strongWind,stormWind:selected.stormWind,stormWarning:selected.stormWarning};
+  const pdfLayers={track:selected.mapTrack,strongWind:selected.strongWind,stormWind:selected.stormWind,stormWarning:selected.stormWarning};
   if(!Object.values(selected).some(Boolean)) {
     alert("PDFに掲載する項目を1つ以上選択してください。"); return false;
   }
-  const mapDataUrl=await makePdfMapImage(renderedTrack,pdfLayers);
+  const mapDataUrl=selected.map?await makePdfMapImage(renderedTrack,pdfLayers):"";
   const title=$("stormTitle").textContent || "台風情報";
   const issued=$("stormSubtitle").textContent || "";
   const now=new Date().toLocaleString("ja-JP",{timeZone:"Asia/Tokyo"});
@@ -958,7 +976,7 @@ async function buildPdfReport() {
   if(info.length) blocks.push(`<section><h2>父島アメダスへの最接近情報</h2><div class="pdf-metrics">${info.join("")}</div></section>`);
   $("pdfReport").innerHTML=`
     <header class="pdf-head"><div><div class="pdf-kicker">自治体向け台風情報 / CHICHIJIMA AMEDAS</div><h1>${escHtml(title)}</h1><p>${escHtml(issued)}</p></div><div class="pdf-created">資料作成：${escHtml(now)}<br>基準地点：父島アメダス（44301）</div></header>
-    <section class="pdf-map-section"><h2>地形図・台風位置図</h2>${mapDataUrl?`<img class="pdf-generated-map" src="${mapDataUrl}" alt="地形図に台風経路・風域・父島を重ねた地図">`:`<p class="pdf-muted">地図画像を生成できませんでした。</p>`}<p class="pdf-muted">背景地図：${baseMapCheckbox?.checked?"OpenTopoMap":"OpenStreetMap"}。台風経路・風域・父島アメダスを地理座標から描画しています。</p></section>
+    ${selected.map?`<section class="pdf-map-section"><h2>地形図・台風位置図</h2>${mapDataUrl?`<img class="pdf-generated-map" src="${mapDataUrl}" alt="地形図に台風経路・風域・父島を重ねた地図">`:`<p class="pdf-muted">地図画像を生成できませんでした。</p>`}<p class="pdf-muted">背景地図：${baseMapCheckbox?.checked?"OpenTopoMap":"OpenStreetMap"}。台風経路・風域・父島アメダスを地理座標から描画しています。</p></section>`:""}
     ${blocks.join("")}
     <footer class="pdf-foot">出典：気象庁公開台風データ（取得・加工）／父島アメダス座標。個人開発ツールによる参考資料です。公式の予報・警報・防災情報の代替ではありません。最接近値は経路点間の補間による推定値です。移動速度・方向は隣接する中心位置間から計算した概算で、公式発表値とは異なる場合があります。</footer>`;
   return true;
