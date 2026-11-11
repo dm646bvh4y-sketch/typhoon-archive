@@ -22,12 +22,15 @@ jobs:
         run: python scripts/archive_forecasts.py
       - name: Archive timestamped typhoon analysis positions
         run: python scripts/archive_best_tracks.py
+      - name: Verify archived typhoon forecasts
+        run: python scripts/verify_forecasts.py
       - name: Commit archive updates
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f data/archive
           git add -f data/track-archive
+          git add -f data/verification
           if ! git diff --cached --quiet; then
             git commit -m "Archive JMA typhoon forecast snapshots"
             git push
