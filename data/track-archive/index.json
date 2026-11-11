@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-11T12:08:08+00:00",
+  "updatedAt": "2026-11-11T13:26:11+00:00",
   "storms": {
     "TC2638": {
       "typhoonNumber": "2632",
       "name": null,
       "file": "TC2638.json",
-      "recordCount": 24,
+      "recordCount": 25,
       "firstObservation": "2026-11-09T15:00:00+09:00",
-      "lastObservation": "2026-11-11T18:00:00+09:00"
+      "lastObservation": "2026-11-11T21:00:00+09:00"
     }
   }
 }

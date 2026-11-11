@@ -409,9 +409,26 @@
       "typhoonNumber": "2632",
       "name": null,
       "sourceIssueTime": "2026-11-11T18:45:00+09:00",
-      "sourceFile": "live:TC2638/specifications.json",
+      "sourceFile": "data/archive/TC2638/20261111T101250+0000.json",
       "firstCapturedAt": "2026-11-11T10:12:50.700057+00:00",
-      "lastCapturedAt": "2026-11-11T12:08:08+00:00"
+      "lastCapturedAt": "2026-11-11T10:12:50.700057+00:00"
+    },
+    {
+      "observationDateTime": "2026-11-11T21:00:00+09:00",
+      "latitude": 30.0,
+      "longitude": 153.0,
+      "centralPressureHpa": 990.0,
+      "maximumWindMs": null,
+      "maximumGustMs": null,
+      "course": "東北東",
+      "speedKmh": 55.0,
+      "typhoonCode": "TC2638",
+      "typhoonNumber": "2632",
+      "name": null,
+      "sourceIssueTime": "2026-11-11T21:45:00+09:00",
+      "sourceFile": "live:TC2638/specifications.json",
+      "firstCapturedAt": "2026-11-11T13:26:10.736858+00:00",
+      "lastCapturedAt": "2026-11-11T13:26:11+00:00"
     }
   ]
 }
