@@ -1,5 +1,172 @@
 {
   "schemaVersion": 1,
-  "updatedAt": null,
-  "storms": {}
+  "updatedAt": "2026-11-11T05:13:57.677735+00:00",
+  "storms": {
+    "TC2638": {
+      "typhoonNumber": "2632",
+      "name": null,
+      "snapshots": [
+        {
+          "capturedAt": "2026-11-09T13:28:23.688510+00:00",
+          "sourceIssueTime": "2026-11-09T21:50:00+09:00",
+          "file": "TC2638/20261109T132823+0000.json",
+          "sha256": "2e277fb68e1ed178a41f508c55c4370e188f58fb6c6a8ecb780d509922af0bf0",
+          "checks": 2,
+          "lastSeenAt": "2026-11-09T15:08:39.649900+00:00"
+        },
+        {
+          "capturedAt": "2026-11-09T16:15:49.104761+00:00",
+          "sourceIssueTime": "2026-11-10T00:50:00+09:00",
+          "file": "TC2638/20261109T161549+0000.json",
+          "sha256": "19203a8ace86ede7a319378e72216d30c4d2f877d64779eaa0dd1fdd804dfe20",
+          "checks": 2,
+          "lastSeenAt": "2026-11-09T17:24:32.777964+00:00"
+        },
+        {
+          "capturedAt": "2026-11-09T19:09:38.417535+00:00",
+          "sourceIssueTime": "2026-11-10T03:45:00+09:00",
+          "file": "TC2638/20261109T190938+0000.json",
+          "sha256": "e0dcc2fe7e2bf5a9ab6b6804b1dd1b6f8678515b0a176cf47f0317f04c14d903",
+          "checks": 3,
+          "lastSeenAt": "2026-11-09T21:03:52.773659+00:00"
+        },
+        {
+          "capturedAt": "2026-11-09T21:58:40.193150+00:00",
+          "sourceIssueTime": "2026-11-10T06:45:00+09:00",
+          "file": "TC2638/20261109T215840+0000.json",
+          "sha256": "e29c6f4e2b8de92afe963fe02295d6ef3265ce6bccac74a44efe8b74069b284e",
+          "checks": 3,
+          "lastSeenAt": "2026-11-09T23:50:47.707623+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T01:16:56.428240+00:00",
+          "sourceIssueTime": "2026-11-10T09:45:00+09:00",
+          "file": "TC2638/20261110T011656+0000.json",
+          "sha256": "ce6e360f12c7f4589624b13f144ca4ddacefb9ba26279915fc380fd3a34f9f71",
+          "checks": 2,
+          "lastSeenAt": "2026-11-10T02:19:04.684552+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T04:03:20.299291+00:00",
+          "sourceIssueTime": "2026-11-10T12:45:00+09:00",
+          "file": "TC2638/20261110T040320+0000.json",
+          "sha256": "61d4917681df9d740a2bffec1e9d7995a74c5b7c0c05a066bc9c6af7dc5befb3",
+          "checks": 3,
+          "lastSeenAt": "2026-11-10T06:04:46.286741+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T07:25:46.036549+00:00",
+          "sourceIssueTime": "2026-11-10T15:45:00+09:00",
+          "file": "TC2638/20261110T072546+0000.json",
+          "sha256": "409b0039a4170204fab138747ceca493a12d2560f3e7a7340091fef0e7d7f698",
+          "checks": 1,
+          "lastSeenAt": "2026-11-10T07:25:46.036549+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T09:04:30.393696+00:00",
+          "sourceIssueTime": "2026-11-10T17:45:00+09:00",
+          "file": "TC2638/20261110T090430+0000.json",
+          "sha256": "7f7a23f678c890a9c96c91b5b1abe63cd9fe8dac0d1a54bddf35b0067268b841",
+          "checks": 1,
+          "lastSeenAt": "2026-11-10T09:04:30.393696+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T10:06:39.828638+00:00",
+          "sourceIssueTime": "2026-11-10T18:45:00+09:00",
+          "file": "TC2638/20261110T100639+0000.json",
+          "sha256": "283ace19d7cfcaad6322733dfb217a6267f61480443f27d0e3f6a9c63e22ef76",
+          "checks": 1,
+          "lastSeenAt": "2026-11-10T10:06:39.828638+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T11:02:12.561296+00:00",
+          "sourceIssueTime": "2026-11-10T19:45:00+09:00",
+          "file": "TC2638/20261110T110212+0000.json",
+          "sha256": "8f3a1595435177408c1a9fcfc987ffb729da634e59cb1d9c0bd82fe56586691a",
+          "checks": 1,
+          "lastSeenAt": "2026-11-10T11:02:12.561296+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T12:00:10.352792+00:00",
+          "sourceIssueTime": "2026-11-10T20:50:00+09:00",
+          "file": "TC2638/20261110T120010+0000.json",
+          "sha256": "72a81134467ddb3248ba03729aee3f7da327118aa112fb4196e611bb670c3d10",
+          "checks": 1,
+          "lastSeenAt": "2026-11-10T12:00:10.352792+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T13:19:22.044088+00:00",
+          "sourceIssueTime": "2026-11-10T21:50:00+09:00",
+          "file": "TC2638/20261110T131922+0000.json",
+          "sha256": "0cb4fe2b7d98e620b3ff3bffa446cb1fadb12193761d6e2a8710bb034c9938bf",
+          "checks": 1,
+          "lastSeenAt": "2026-11-10T13:19:22.044088+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T15:01:59.010893+00:00",
+          "sourceIssueTime": "2026-11-10T23:45:00+09:00",
+          "file": "TC2638/20261110T150159+0000.json",
+          "sha256": "e2a39bba3de6ea3a8302dcc8ab20d3b06a3680d1ee83dce6a33082f002f564be",
+          "checks": 1,
+          "lastSeenAt": "2026-11-10T15:01:59.010893+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T16:00:30.177168+00:00",
+          "sourceIssueTime": "2026-11-11T00:45:00+09:00",
+          "file": "TC2638/20261110T160030+0000.json",
+          "sha256": "cf43df35b82b54e2813f2d065ee400aeb36c2ff22b294a5b7329b5df4c98c3f5",
+          "checks": 1,
+          "lastSeenAt": "2026-11-10T16:00:30.177168+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T17:04:50.593118+00:00",
+          "sourceIssueTime": "2026-11-11T01:45:00+09:00",
+          "file": "TC2638/20261110T170450+0000.json",
+          "sha256": "aa02fe2de0d3da2bcdb561e0b25f2bee54695108a502e68b068249be624e2c3d",
+          "checks": 1,
+          "lastSeenAt": "2026-11-10T17:04:50.593118+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T17:56:51.464902+00:00",
+          "sourceIssueTime": "2026-11-11T02:45:00+09:00",
+          "file": "TC2638/20261110T175651+0000.json",
+          "sha256": "5e0444b4578a6cf1c3788a5d9b01ef0a9c5dde5737939c32fca41167e32ecb5c",
+          "checks": 1,
+          "lastSeenAt": "2026-11-10T17:56:51.464902+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T19:10:29.873353+00:00",
+          "sourceIssueTime": "2026-11-11T03:50:00+09:00",
+          "file": "TC2638/20261110T191029+0000.json",
+          "sha256": "af397c1da8ce35f44db4709b15e99f1c04ea1bb1256fc92edb109a52c2eed331",
+          "checks": 3,
+          "lastSeenAt": "2026-11-10T20:57:44.962520+00:00"
+        },
+        {
+          "capturedAt": "2026-11-10T21:53:58.766990+00:00",
+          "sourceIssueTime": "2026-11-11T06:45:00+09:00",
+          "file": "TC2638/20261110T215358+0000.json",
+          "sha256": "f77ef91458cd17583b8f64739842a184f231005a1bdec11c8bbfccbf46c56a3e",
+          "checks": 3,
+          "lastSeenAt": "2026-11-10T23:47:18.143557+00:00"
+        },
+        {
+          "capturedAt": "2026-11-11T01:20:41.761745+00:00",
+          "sourceIssueTime": "2026-11-11T09:45:00+09:00",
+          "file": "TC2638/20261111T012041+0000.json",
+          "sha256": "042d9eef453ba417c16496c0df7270b3b73106ec83f6dfaa287859fe27d5c7f6",
+          "checks": 2,
+          "lastSeenAt": "2026-11-11T03:01:48.025211+00:00"
+        },
+        {
+          "capturedAt": "2026-11-11T04:10:18.092799+00:00",
+          "sourceIssueTime": "2026-11-11T12:45:00+09:00",
+          "file": "TC2638/20261111T041018+0000.json",
+          "sha256": "2396fccc1613350b0fd698b7739a44dd8f25482732ea28c72ff9ecac2dc96fb1",
+          "checks": 2,
+          "lastSeenAt": "2026-11-11T05:13:57.677735+00:00"
+        }
+      ]
+    }
+  }
 }
