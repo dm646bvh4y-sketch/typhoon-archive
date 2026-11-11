@@ -3,15 +3,14 @@
   "typhoonCode": "TC2638",
   "verificationReference": "analysis",
   "summary": {
-    "analysisRecordCount": 23,
-    "forecastCount": 147,
-    "matchedForecastCount": 87,
-    "matchedValidTimeCount": 17
+    "analysisRecordCount": 24,
+    "forecastCount": 149,
+    "matchedForecastCount": 96,
+    "matchedValidTimeCount": 18
   },
   "unmatchedValidTimes": [
     "2026-11-10T16:00:00+09:00",
     "2026-11-10T22:00:00+09:00",
-    "2026-11-11T18:00:00+09:00",
     "2026-11-11T21:00:00+09:00",
     "2026-11-12T00:00:00+09:00",
     "2026-11-12T03:00:00+09:00",
@@ -19,6 +18,7 @@
     "2026-11-12T09:00:00+09:00",
     "2026-11-12T12:00:00+09:00",
     "2026-11-12T15:00:00+09:00",
+    "2026-11-12T18:00:00+09:00",
     "2026-11-12T21:00:00+09:00",
     "2026-11-13T03:00:00+09:00",
     "2026-11-13T09:00:00+09:00",
@@ -489,6 +489,17 @@
       "dataType": "analysis"
     },
     {
+      "validtime": "2026-11-11T18:00:00+09:00",
+      "issueTime": "2026-11-10T18:45:00+09:00",
+      "advancedHours": 24,
+      "latitude": 28.7,
+      "longitude": 150.5,
+      "pressure": 0.0,
+      "wind": 5.0,
+      "position": 73.8774781204005,
+      "dataType": "analysis"
+    },
+    {
       "validtime": "2026-11-10T20:00:00+09:00",
       "issueTime": "2026-11-10T19:45:00+09:00",
       "advancedHours": 1,
@@ -577,6 +588,17 @@
       "dataType": "analysis"
     },
     {
+      "validtime": "2026-11-11T18:00:00+09:00",
+      "issueTime": "2026-11-10T19:45:00+09:00",
+      "advancedHours": 23,
+      "latitude": 28.7,
+      "longitude": 150.5,
+      "pressure": 0.0,
+      "wind": 5.0,
+      "position": 73.8774781204005,
+      "dataType": "analysis"
+    },
+    {
       "validtime": "2026-11-10T21:00:00+09:00",
       "issueTime": "2026-11-10T20:50:00+09:00",
       "advancedHours": 1,
@@ -654,6 +676,17 @@
       "dataType": "analysis"
     },
     {
+      "validtime": "2026-11-11T18:00:00+09:00",
+      "issueTime": "2026-11-10T20:50:00+09:00",
+      "advancedHours": 22,
+      "latitude": 28.7,
+      "longitude": 150.5,
+      "pressure": 0.0,
+      "wind": 5.0,
+      "position": 73.8774781204005,
+      "dataType": "analysis"
+    },
+    {
       "validtime": "2026-11-11T00:00:00+09:00",
       "issueTime": "2026-11-10T21:50:00+09:00",
       "advancedHours": 3,
@@ -717,6 +750,17 @@
       "pressure": 0.0,
       "wind": 0.0,
       "position": 97.464827964288,
+      "dataType": "analysis"
+    },
+    {
+      "validtime": "2026-11-11T18:00:00+09:00",
+      "issueTime": "2026-11-10T21:50:00+09:00",
+      "advancedHours": 21,
+      "latitude": 28.4,
+      "longitude": 150.3,
+      "pressure": -5.0,
+      "wind": 5.0,
+      "position": 112.09556212328198,
       "dataType": "analysis"
     },
     {
@@ -786,6 +830,17 @@
       "dataType": "analysis"
     },
     {
+      "validtime": "2026-11-11T18:00:00+09:00",
+      "issueTime": "2026-11-10T23:45:00+09:00",
+      "advancedHours": 19,
+      "latitude": 28.4,
+      "longitude": 150.3,
+      "pressure": -5.0,
+      "wind": 5.0,
+      "position": 112.09556212328198,
+      "dataType": "analysis"
+    },
+    {
       "validtime": "2026-11-11T01:00:00+09:00",
       "issueTime": "2026-11-11T00:45:00+09:00",
       "advancedHours": 1,
@@ -849,6 +904,17 @@
       "pressure": 0.0,
       "wind": 0.0,
       "position": 101.5130650838357,
+      "dataType": "analysis"
+    },
+    {
+      "validtime": "2026-11-11T18:00:00+09:00",
+      "issueTime": "2026-11-11T00:45:00+09:00",
+      "advancedHours": 18,
+      "latitude": 28.4,
+      "longitude": 150.4,
+      "pressure": -5.0,
+      "wind": 5.0,
+      "position": 106.44785476703233,
       "dataType": "analysis"
     },
     {
@@ -918,6 +984,17 @@
       "dataType": "analysis"
     },
     {
+      "validtime": "2026-11-11T18:00:00+09:00",
+      "issueTime": "2026-11-11T01:45:00+09:00",
+      "advancedHours": 17,
+      "latitude": 28.4,
+      "longitude": 150.4,
+      "pressure": -5.0,
+      "wind": 5.0,
+      "position": 106.44785476703233,
+      "dataType": "analysis"
+    },
+    {
       "validtime": "2026-11-11T03:00:00+09:00",
       "issueTime": "2026-11-11T02:45:00+09:00",
       "advancedHours": 1,
@@ -973,6 +1050,17 @@
       "dataType": "analysis"
     },
     {
+      "validtime": "2026-11-11T18:00:00+09:00",
+      "issueTime": "2026-11-11T02:45:00+09:00",
+      "advancedHours": 16,
+      "latitude": 28.4,
+      "longitude": 150.4,
+      "pressure": -5.0,
+      "wind": 5.0,
+      "position": 106.44785476703233,
+      "dataType": "analysis"
+    },
+    {
       "validtime": "2026-11-11T15:00:00+09:00",
       "issueTime": "2026-11-11T03:50:00+09:00",
       "advancedHours": 12,
@@ -981,6 +1069,17 @@
       "pressure": 5.0,
       "wind": 0.0,
       "position": 62.84648151096981,
+      "dataType": "analysis"
+    },
+    {
+      "validtime": "2026-11-11T18:00:00+09:00",
+      "issueTime": "2026-11-11T06:45:00+09:00",
+      "advancedHours": 12,
+      "latitude": 28.8,
+      "longitude": 150.9,
+      "pressure": 0.0,
+      "wind": 5.0,
+      "position": 45.52879444179504,
       "dataType": "analysis"
     }
   ]
