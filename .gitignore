@@ -2,6 +2,10 @@ data/*
 !data/xml-archive/
 !data/xml-archive/**
 
+!data/track-archive/
+!data/track-archive/**
+
+
 __pycache__/
 
 .DS_Store
