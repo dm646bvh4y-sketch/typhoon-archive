@@ -426,9 +426,9 @@
       "typhoonNumber": "2632",
       "name": null,
       "sourceIssueTime": "2026-11-11T21:45:00+09:00",
-      "sourceFile": "live:TC2638/specifications.json",
+      "sourceFile": "data/archive/TC2638/20261111T132610+0000.json",
       "firstCapturedAt": "2026-11-11T13:26:10.736858+00:00",
-      "lastCapturedAt": "2026-11-12T10:17:18+00:00"
+      "lastCapturedAt": "2026-11-11T13:26:10.736858+00:00"
     }
   ]
 }
